@@ -1,0 +1,23 @@
+# Runtime do servidor
+.server.pid
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Atalhos do Windows (caminhos absolutos, específicos da máquina)
+*.lnk
+
+# Arquivos temporários / capturas de tela geradas
+shots/
+_shot_*.html
+
+# SO / editores
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dossiê & Bancada: Seiko Mod 40 mm (NH35A)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="icone_seiko.ico" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <div class="watch-emblem" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <polyline points="12 7 12 12 15 14" stroke="#10b981" />
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <h1>
+            Seiko Mod 40 mm
+            <span class="badge-calibre">Calibre SII NH35A</span>
+          </h1>
+          <p class="brand-subtitle">Dossiê Técnico, Orçamento Dinâmico e Controle de Bancada</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="save-indicator" title="Seu progresso fica salvo automaticamente no navegador">
+          <span class="save-dot"></span>
+          <span id="save-status-text">Sincronizado (localStorage)</span>
+        </div>
+        <button type="button" id="btn-reset-data" class="btn-secondary">
+          Restaurar Padrão
+        </button>
+        <button type="button" id="btn-shutdown-server" class="btn-danger" title="Desligar o servidor local (porta 8080)">
+          ⏻ Desligar Servidor
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- KPI Financial & Progress Summary -->
+    <section class="kpi-grid" aria-label="Resumo Financeiro e Progresso">
+      <div class="kpi-card lume-accent">
+        <div class="kpi-label">
+          <span>Itens Comprados</span>
+          <span id="kpi-bought-count">2/5 peças</span>
+        </div>
+        <div class="kpi-value green" id="kpi-bought-val">R$ 111,79</div>
+        <div class="kpi-sub" id="kpi-bought-sub">R$ 92,73 base + R$ 19,06 impostos</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="kpi-bought-bar" style="width: 17%"></div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Pendentes no Carrinho</span>
+          <span id="kpi-pending-count">3/5 no carrinho</span>
+        </div>
+        <div class="kpi-value" id="kpi-pending-val">R$ 535,09</div>
+        <div class="kpi-sub" id="kpi-pending-sub">R$ 444,02 base + R$ 91,07 impostos</div>
+      </div>
+
+      <div class="kpi-card gold-accent">
+        <div class="kpi-label">
+          <span>Custo Total do Projeto</span>
+          <span>5/5 Peças</span>
+        </div>
+        <div class="kpi-value gold" id="kpi-total-val">R$ 646,88</div>
+        <div class="kpi-sub" id="kpi-total-sub">R$ 536,75 base + R$ 110,13 impostos</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Progresso dos Checklists</span>
+          <span id="kpi-progress-pct">8%</span>
+        </div>
+        <div class="kpi-value" id="kpi-progress-val">2 / 25</div>
+        <div class="kpi-sub" id="kpi-progress-sub">Aquisição, Bancada e Ferramentas</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="kpi-progress-bar" style="width: 8%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" aria-label="Seções do Projeto">
+      <button type="button" class="tab-btn active" data-tab="checklists">
+        ✓ Checklists & Bancada
+        <span class="tab-count" id="tab-badge-checklists">2/25</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="inventory">
+        📦 Inventário & Links AliExpress
+        <span class="tab-count" id="tab-badge-parts">2/5</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="specs">
+        ⚙️ Matriz de Compatibilidade
+      </button>
+      <button type="button" class="tab-btn" data-tab="risks">
+        ⚠️ Auditoria de Riscos (4)
+      </button>
+    </nav>
+
+    <!-- TAB 1: CHECKLISTS INTERATIVOS -->
+    <section id="tab-checklists" class="section-view active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Controle Operacional: Aquisição, Ferramentas e Montagem</h2>
+          <p class="section-desc">
+            Clique em qualquer item para marcar ou desmarcar. As peças compradas atualizam automaticamente o resumo financeiro acima.
+          </p>
+        </div>
+      </div>
+
+      <div class="checklist-columns">
+        <!-- Fase 1: Aquisição -->
+        <div class="checklist-panel">
+          <div class="panel-head">
+            <h3>Fase 1: Aquisição de Peças</h3>
+            <span class="panel-badge" id="badge-acquisition">2/7 (29%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="bar-acquisition" style="width: 29%"></div>
+          </div>
+          <ul class="checklist-items" id="list-acquisition"></ul>
+
+          <!-- Ferramentas de Relojoaria -->
+          <div style="margin-top: 2rem;">
+            <div class="panel-head">
+              <h3>Ferramentas de Relojoaria Necessárias</h3>
+              <span class="panel-badge" id="badge-tools">0/6 (0%)</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="bar-tools" style="width: 0%"></div>
+            </div>
+            <ul class="checklist-items" id="list-tools"></ul>
+          </div>
+        </div>
+
+        <!-- Fase 2: Preparação e Montagem -->
+        <div class="checklist-panel">
+          <div class="panel-head">
+            <h3>Fase 2: Protocolo de Preparação e Montagem</h3>
+            <span class="panel-badge" id="badge-assembly">0/12 (0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="bar-assembly" style="width: 0%"></div>
+          </div>
+          <ul class="checklist-items" id="list-assembly"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: INVENTÁRIO DE PEÇAS E LINKS -->
+    <section id="tab-inventory" class="section-view">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Inventário de Peças e Links Diretos</h2>
+          <p class="section-desc">
+            Detalhamento de variantes, valores base, impostos e observações de compatibilidade. Você pode alterar o status entre "Comprado" e "No Carrinho".
+          </p>
+        </div>
+      </div>
+      <div class="parts-grid" id="parts-container"></div>
+    </section>
+
+    <!-- TAB 3: MATRIZ DE COMPATIBILIDADE E ESPECIFICAÇÕES MECÂNICAS -->
+    <section id="tab-specs" class="section-view">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Matriz de Compatibilidade e Especificações Mecânicas</h2>
+          <p class="section-desc">
+            Validação dimensional do conjunto Calibre SII NH35A + Mostrador 28,5 mm + Caixa GS 40 mm.
+          </p>
+        </div>
+      </div>
+
+      <div class="specs-layout">
+        <div class="table-card">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Parâmetro Técnico</th>
+                <th>Especificação do Projeto</th>
+                <th>Status de Compatibilidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Calibre Base</strong></td>
+                <td>SII / TMI NH35A (21.600 bph, 3 Hz, 24 rubis, 41 h reserva)</td>
+                <td><span class="compat-pill">Padrão de referência</span></td>
+              </tr>
+              <tr>
+                <td><strong>Alinhamento Coroa / Data</strong></td>
+                <td>Posição 3:00 (3H) no movimento, mostrador e caixa</td>
+                <td><span class="compat-pill">100% Sincronizado</span></td>
+              </tr>
+              <tr>
+                <td><strong>Diâmetro do Mostrador</strong></td>
+                <td>⌀ 28,5 mm (Variante <code>16 gold</code>)</td>
+                <td><span class="compat-pill">Padrão exato p/ caixa 40 mm</span></td>
+              </tr>
+              <tr>
+                <td><strong>Furação de Ponteiros</strong></td>
+                <td>Horas: 1,50 mm / Minutos: 0,90 mm / Segundos: 0,21 mm</td>
+                <td><span class="compat-pill">100% Compatível (NH35/NH36)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Varredura do Segundeiro</strong></td>
+                <td>Raio 13,0 mm (⌀ 26,0 mm) em mostrador de ⌀ 28,5 mm</td>
+                <td><span class="compat-pill warn">Folga radial 1,25 mm (Testar giro)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="geometry-card">
+          <h3 style="font-size: 1rem; color: var(--gold-light);">Geometria Radial: Mostrador vs. Segundeiro</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">
+            Proporção em escala ⌀ 28,5 mm vs. ⌀ 26,0 mm
+          </p>
+          <div class="geometry-svg-wrap">
+            <svg viewBox="0 0 220 220" width="100%" height="100%">
+              <!-- Caixa externa 40mm representativa -->
+              <circle cx="110" cy="110" r="102" fill="#12161b" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+              <!-- Mostrador 28.5mm (r = 85.5) -->
+              <circle cx="110" cy="110" r="85.5" fill="rgba(212, 175, 55, 0.12)" stroke="#d4af37" stroke-width="2" />
+              <!-- Varredura segundeiro 26.0mm (r = 78) -->
+              <circle cx="110" cy="110" r="78" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 4" />
+              <!-- Janela de data 3H -->
+              <rect x="166" y="102" width="18" height="16" rx="2" fill="#0b0d10" stroke="#d4af37" stroke-width="1.2" />
+              <text x="175" y="113" fill="#f3f4f6" font-size="8" text-anchor="middle" font-family="monospace">3H</text>
+              <!-- Ponteiro de segundos 13mm -->
+              <line x1="110" y1="125" x2="110" y2="32" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" />
+              <!-- Eixo central -->
+              <circle cx="110" cy="110" r="4" fill="#d4af37" />
+            </svg>
+          </div>
+          <div class="geometry-legend">
+            <div><span style="color:#d4af37;">●</span> <strong>Mostrador:</strong> ⌀ 28,5 mm (Raio 14,25 mm)</div>
+            <div><span style="color:#10b981;">◌</span> <strong>Giro Segundeiro:</strong> ⌀ 26,0 mm (Raio 13,0 mm)</div>
+            <div><span style="color:#f59e0b;">↔</span> <strong>Folga Radial:</strong> 1,25 mm até a borda do mostrador</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: AUDITORIA DE RISCOS E PONTOS DE ATENÇÃO NA BANCADA -->
+    <section id="tab-risks" class="section-view">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Auditoria de Riscos e Pontos de Atenção na Bancada</h2>
+          <p class="section-desc">
+            Protocolos preventivos para evitar incompatibilidade estética ou danos mecânicos durante a montagem.
+          </p>
+        </div>
+      </div>
+
+      <div class="risk-grid">
+        <article class="risk-card high">
+          <div class="risk-header">
+            <span class="risk-num">1</span>
+            <h4>Coerência do Fundo da Caixa (Caseback)</h4>
+          </div>
+          <p>
+            O rotor customizado Dragão Dourado só tem utilidade estética se a tampa traseira da caixa PALUXEY for transparente (<em>Exhibition Caseback</em>). Caso o anúncio envie tampa traseira cega em aço sólido, confirme se há opção com fundo de vidro ou adquira uma tampa traseira transparente avulsa compatível com a caixa.
+          </p>
+        </article>
+
+        <article class="risk-card">
+          <div class="risk-header">
+            <span class="risk-num">2</span>
+            <h4>Remoção dos Pinos do Mostrador (Dial Feet)</h4>
+          </div>
+          <p>
+            Mostradores para modificação vêm com 4 ou 6 pinos na traseira (para atender coroas às 3h, 3.8h e 4.1h). Encaixe o mostrador a seco ou compare com o anel espaçador cinza/preto do NH35A, mantenha apenas os 2 pinos da posição 3h, corte os demais com alicate de corte rente (<em>flush cutter</em>) e lixe qualquer rebarba para que o mostrador assente 100% plano.
+          </p>
+        </article>
+
+        <article class="risk-card">
+          <div class="risk-header">
+            <span class="risk-num">3</span>
+            <h4>Instalação do Ponteiro de Segundos (13 mm)</h4>
+          </div>
+          <p>
+            O eixo do segundeiro tem apenas 0,21 mm. Utilize massa <em>Rodico</em> para segurar o ponteiro com estabilidade, alinhe o tubo central sobre o pino sob boa iluminação/lupa e pressione suavemente com ponteira plana de nylon. Verifique de perfil se ele está paralelo ao ponteiro de minutos.
+          </p>
+        </article>
+
+        <article class="risk-card">
+          <div class="risk-header">
+            <span class="risk-num">4</span>
+            <h4>Corte da Tige (Haste da Coroa)</h4>
+          </div>
+          <p>
+            Nunca corte a tige de uma só vez. Meça a folga com a tige inserida no movimento dentro da caixa, corte deixando 0,5 mm de margem e vá desgastando na lixa diamantada até que a coroa rosqueie/encaixe sem dar corda sozinha ao fechar e sem ficar frouxa. Fixe a rosca final com uma micro-gota de trava-rosca (ex: Loctite 242/243).
+          </p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
